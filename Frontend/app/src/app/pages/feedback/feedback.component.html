@@ -1,0 +1,15 @@
+<div class="feedback-page">
+  <h1>Feedback</h1>
+  <form [formGroup]="form" (ngSubmit)="submit()" *ngIf="!auth.isAdmin()">
+    <div class="field"><label>Food 1-5</label><input type="number" formControlName="foodRating" min="1" max="5" /></div>
+    <div class="field"><label>Service 1-5</label><input type="number" formControlName="serviceRating" min="1" max="5" /></div>
+    <div class="field"><label>Ambiance 1-5</label><input type="number" formControlName="ambianceRating" min="1" max="5" /></div>
+    <div class="field"><label>Comment</label><textarea formControlName="comment"></textarea></div>
+    <button type="submit">Submit</button>
+  </form>
+  <h2>Feedback List</h2>
+  <div class="item" *ngFor="let f of list">
+    <p>Food: {{ f.foodRating }} Service: {{ f.serviceRating }} Ambiance: {{ f.ambianceRating }}</p>
+    <p>{{ f.comment }}</p>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="menu-page">
+  <h1>Our Menu</h1>
+  <div class="filters">
+    <select [(ngModel)]="categoryFilter" (ngModelChange)="loadMenu()">
+      <option value="">All Categories</option>
+      @for (c of categories; track c.id) {
+        <option [value]="c.id">{{ c.name }}</option>
+      }
+    </select>
+    <input type="text" placeholder="Search..." [(ngModel)]="searchTerm" (keyup.enter)="loadMenu()" />
+    <button (click)="loadMenu()">Apply</button>
+  </div>
+  @if (loading) { <p>Loading...</p> }
+  @else {
+    <div class="menu-grid">
+      @for (item of items; track item.id) {
+        <div class="menu-card">
+          <div class="img-wrap">
+            @if (item.imageUrl) {
+              <img [src]="imgUrl(item.imageUrl)" [alt]="item.name" />
+            } @else {
+              <div class="placeholder">No image</div>
+            }
+          </div>
+          <h3>{{ item.name }}</h3>
+          <p class="desc">{{ item.description }}</p>
+          <p class="price">Rs {{ item.price }}</p>
+          @if (auth.isLoggedIn()) {
+            <button (click)="addToCart(item)">Add to Cart</button>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

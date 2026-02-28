@@ -1,0 +1,27 @@
+<div class="cart-page">
+  <h1>Your Cart</h1>
+  @if (cart.cart().length === 0) {
+    <p>Cart is empty. <a routerLink="/menu">Browse Menu</a></p>
+  } @else {
+    <div class="cart-list">
+      @for (item of cart.cart(); track item.menuItemId) {
+        <div class="cart-item">
+          <span>{{ item.name }}</span>
+          <span>Rs {{ item.price }} x {{ item.quantity }}</span>
+          <div class="qty">
+            <button (click)="cart.updateQuantity(item.menuItemId, -1)">-</button>
+            <span>{{ item.quantity }}</span>
+            <button (click)="cart.updateQuantity(item.menuItemId, 1)">+</button>
+            <button class="del" (click)="cart.removeItem(item.menuItemId)">Remove</button>
+          </div>
+        </div>
+      }
+    </div>
+    <div class="summary">
+      <p>Subtotal: Rs {{ cart.subtotal() }}</p>
+      <p>Tax (10%): Rs {{ cart.tax() }}</p>
+      <p><strong>Total: Rs {{ cart.total() }}</strong></p>
+      <button (click)="placeOrder()" [disabled]="placing">Place Order</button>
+    </div>
+  }
+</div>

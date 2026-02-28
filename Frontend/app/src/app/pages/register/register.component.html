@@ -1,0 +1,31 @@
+<div class="form-container">
+  <h1>Register</h1>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    @if (error) { <p class="error">{{ error }}</p> }
+    <div class="field">
+      <label>Name</label>
+      <input formControlName="name" />
+      @if (form.get('name')?.invalid && form.get('name')?.touched) {
+        <span class="err">At least 2 characters</span>
+      }
+    </div>
+    <div class="field">
+      <label>Email</label>
+      <input type="email" formControlName="email" />
+    </div>
+    <div class="field">
+      <label>Phone</label>
+      <input formControlName="phone" />
+    </div>
+    <div class="field">
+      <label>Password (8+ chars, upper, lower, number)</label>
+      <input type="password" formControlName="password" />
+    </div>
+    <div class="field">
+      <label>Address</label>
+      <input formControlName="address" />
+    </div>
+    <button type="submit" [disabled]="loading">Register</button>
+    <p>Already have an account? <a routerLink="/login">Login</a></p>
+  </form>
+</div>

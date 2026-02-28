@@ -1,0 +1,10 @@
+<div class="profile-page">
+  <h1>Profile</h1>
+  <p *ngIf="msg" class="msg">{{ msg }}</p>
+  <form [formGroup]="form" (ngSubmit)="save()">
+    <div class="field"><label>Name</label><input formControlName="name" /></div>
+    <div class="field"><label>Phone</label><input formControlName="phone" /></div>
+    <div class="field"><label>Address</label><input formControlName="address" /></div>
+    <button type="submit">Save</button>
+  </form>
+</div>

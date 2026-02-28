@@ -1,0 +1,45 @@
+<div class="res-page">
+  <h1>Table Reservations</h1>
+  <form [formGroup]="form" (ngSubmit)="submit()" class="res-form">
+    <div class="row">
+      <label>Date</label>
+      <input type="date" formControlName="reservationDate" />
+    </div>
+    <div class="row">
+      <label>Time</label>
+      <input type="time" formControlName="reservationTime" />
+    </div>
+    <div class="row">
+      <label>Guests</label>
+      <input type="number" formControlName="guests" min="1" />
+    </div>
+    <button type="button" (click)="checkAvailability()" [disabled]="checkLoading">Check Availability</button>
+    @if (availableTables.length > 0) {
+      <div class="row">
+        <label>Select Table</label>
+        <select formControlName="tableId">
+          @for (t of availableTables; track t.id) {
+            <option [value]="t.id">Table {{ t.tableNumber }} ({{ t.capacity }} seats)</option>
+          }
+        </select>
+      </div>
+      <div class="row">
+        <label>Special Requests</label>
+        <textarea formControlName="specialRequests"></textarea>
+      </div>
+      <button type="submit" [disabled]="loading">Book Table</button>
+    }
+  </form>
+  <h2>My Reservations</h2>
+  <div class="res-list">
+    @for (r of reservations; track r.id) {
+      <div class="res-card">
+        <p>Date: {{ r.reservationDate }} | Time: {{ r.reservationTime }}</p>
+        <p>Table {{ r.Table?.tableNumber }} | Guests: {{ r.guests }} | Status: {{ r.status }}</p>
+        @if (r.status !== 'cancelled' && (auth.isAdmin() || r.userId === auth.user()?.id)) {
+          <button (click)="cancel(r.id)">Cancel</button>
+        }
+      </div>
+    }
+  </div>
+</div>

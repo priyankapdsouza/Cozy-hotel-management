@@ -1,0 +1,165 @@
+<div class="orders-page">
+  <h1>My Orders</h1>
+  <div class="order-list">
+    @for (o of orders; track o.id) {
+      <div class="order-card" (click)="viewOrder(o)">
+        <p>#{{ o.orderNumber }} - Rs {{ o.total }} - {{ o.status }} - {{ o.paymentStatus }}</p>
+      </div>
+    }
+  </div>
+  @if (selectedOrder) {
+    <div class="modal">
+      <h2>Order {{ selectedOrder.orderNumber }}</h2>
+      <p>Subtotal: Rs {{ selectedOrder.subtotal }} | Tax: Rs {{ selectedOrder.tax }} | Total: Rs {{ selectedOrder.total }}</p>
+      @if (selectedOrder.paymentStatus === 'pending') {
+        <form #paymentForm="ngForm" novalidate>
+          <label>
+            Payment Method
+            <select [(ngModel)]="paymentMethod" name="paymentMethod">
+              <option value="cod">Cash on Delivery</option>
+              <option value="card">Card</option>
+              <option value="netbanking">Net Banking</option>
+            </select>
+          </label>
+
+          @if (paymentMethod === 'card') {
+            <div class="card-section">
+              <h3>Card Details</h3>
+
+              <label>
+                Name on Card
+                <input
+                  type="text"
+                  name="cardHolderName"
+                  [(ngModel)]="cardDetails.cardHolderName"
+                  #cardHolderName="ngModel"
+                  required
+                />
+              </label>
+              <div class="error" *ngIf="cardHolderName.invalid && (cardHolderName.dirty || cardHolderName.touched)">
+                <small *ngIf="cardHolderName.errors?.['required']">Name on card is required.</small>
+              </div>
+
+              <label>
+                Card Number
+                <input
+                  type="text"
+                  name="cardNumber"
+                  [(ngModel)]="cardDetails.cardNumber"
+                  #cardNumber="ngModel"
+                  required
+                  pattern="^[0-9]{16}$"
+                  maxlength="16"
+                />
+              </label>
+              <div class="error" *ngIf="cardNumber.invalid && (cardNumber.dirty || cardNumber.touched)">
+                <small *ngIf="cardNumber.errors?.['required']">Card number is required.</small>
+                <small *ngIf="cardNumber.errors?.['pattern']">Card number must be 16 digits.</small>
+              </div>
+
+              <div class="row">
+                <label>
+                  Expiry Month (MM)
+                  <input
+                    type="text"
+                    name="expiryMonth"
+                    [(ngModel)]="cardDetails.expiryMonth"
+                    #expiryMonth="ngModel"
+                    required
+                    pattern="^(0[1-9]|1[0-2])$"
+                    maxlength="2"
+                  />
+                </label>
+                <label>
+                  Expiry Year (YYYY)
+                  <input
+                    type="text"
+                    name="expiryYear"
+                    [(ngModel)]="cardDetails.expiryYear"
+                    #expiryYear="ngModel"
+                    required
+                    pattern="^[0-9]{4}$"
+                    maxlength="4"
+                  />
+                </label>
+              </div>
+              <div class="error" *ngIf="(expiryMonth.invalid && (expiryMonth.dirty || expiryMonth.touched)) || (expiryYear.invalid && (expiryYear.dirty || expiryYear.touched))">
+                <small *ngIf="expiryMonth.errors?.['required']">Expiry month is required.</small>
+                <small *ngIf="expiryMonth.errors?.['pattern']">Use MM format (01-12).</small>
+                <small *ngIf="expiryYear.errors?.['required']">Expiry year is required.</small>
+                <small *ngIf="expiryYear.errors?.['pattern']">Use YYYY format.</small>
+              </div>
+
+              <label>
+                CVV
+                <input
+                  type="password"
+                  name="cvv"
+                  [(ngModel)]="cardDetails.cvv"
+                  #cvv="ngModel"
+                  required
+                  pattern="^[0-9]{3,4}$"
+                  maxlength="4"
+                />
+              </label>
+              <div class="error" *ngIf="cvv.invalid && (cvv.dirty || cvv.touched)">
+                <small *ngIf="cvv.errors?.['required']">CVV is required.</small>
+                <small *ngIf="cvv.errors?.['pattern']">CVV must be 3 or 4 digits.</small>
+              </div>
+
+              <h3>Billing Address</h3>
+              <label>
+                Address Line 1
+                <input
+                  type="text"
+                  name="billingAddressLine1"
+                  [(ngModel)]="cardDetails.billingAddressLine1"
+                  #billingAddressLine1="ngModel"
+                  required
+                />
+              </label>
+              <div class="error" *ngIf="billingAddressLine1.invalid && (billingAddressLine1.dirty || billingAddressLine1.touched)">
+                <small *ngIf="billingAddressLine1.errors?.['required']">Address is required.</small>
+              </div>
+
+              <label>
+                City
+                <input
+                  type="text"
+                  name="billingCity"
+                  [(ngModel)]="cardDetails.billingCity"
+                  #billingCity="ngModel"
+                  required
+                />
+              </label>
+              <div class="error" *ngIf="billingCity.invalid && (billingCity.dirty || billingCity.touched)">
+                <small *ngIf="billingCity.errors?.['required']">City is required.</small>
+              </div>
+
+              <label>
+                Postal Code
+                <input
+                  type="text"
+                  name="billingPostalCode"
+                  [(ngModel)]="cardDetails.billingPostalCode"
+                  #billingPostalCode="ngModel"
+                  required
+                  pattern="^[0-9A-Za-z\\-\\s]{4,10}$"
+                />
+              </label>
+              <div class="error" *ngIf="billingPostalCode.invalid && (billingPostalCode.dirty || billingPostalCode.touched)">
+                <small *ngIf="billingPostalCode.errors?.['required']">Postal code is required.</small>
+                <small *ngIf="billingPostalCode.errors?.['pattern']">Enter a valid postal code.</small>
+              </div>
+            </div>
+          }
+
+          <button type="button" (click)="pay(paymentForm)" [disabled]="paymentMethod === 'card' && paymentForm.invalid">
+            Pay Now
+          </button>
+        </form>
+      }
+      <button (click)="closeOrder()">Close</button>
+    </div>
+  }
+</div>

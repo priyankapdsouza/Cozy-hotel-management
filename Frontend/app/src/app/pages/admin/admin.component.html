@@ -1,0 +1,55 @@
+<div class="admin-page">
+  <h1>Admin Panel</h1>
+  <div class="tabs">
+    <button (click)="tab='orders'" [class.active]="tab==='orders'">Orders</button>
+    <button (click)="tab='reservations'" [class.active]="tab==='reservations'">Reservations</button>
+    <button (click)="tab='users'" [class.active]="tab==='users'">Users</button>
+    <button (click)="tab='menu'" [class.active]="tab==='menu'">Menu</button>
+  </div>
+  @if (tab === 'orders') {
+    <div class="section">
+      @for (o of orders; track o.id) {
+        <div class="card">
+          <p>#{{ o.orderNumber }} - Rs {{ o.total }} - {{ o.status }}</p>
+          <select #sel (change)="updateOrderStatus(o, sel.value)">
+            <option [value]="o.status">{{ o.status }}</option>
+            <option value="pending">pending</option>
+            <option value="preparing">preparing</option>
+            <option value="delivered">delivered</option>
+          </select>
+          <button (click)="cancelOrder(o)">Cancel</button>
+        </div>
+      }
+    </div>
+  }
+  @if (tab === 'reservations') {
+    <div class="section">
+      @for (r of reservations; track r.id) {
+        <div class="card">{{ r.reservationDate }} {{ r.reservationTime }} - Table {{ r.Table?.tableNumber }}</div>
+      }
+    </div>
+  }
+  @if (tab === 'users') {
+    <div class="section">
+      @for (u of users; track u.id) {
+        <div class="card">{{ u.name }} - {{ u.email }} ({{ u.role }})</div>
+      }
+    </div>
+  }
+  @if (tab === 'menu') {
+    <div class="section">
+      <h3>Add Menu Item</h3>
+      <input [(ngModel)]="newMenuItem.name" placeholder="Name" />
+      <input [(ngModel)]="newMenuItem.description" placeholder="Description" />
+      <input type="number" [(ngModel)]="newMenuItem.price" placeholder="Price" />
+      <select [(ngModel)]="newMenuItem.categoryId">
+        @for (c of categories; track c.id) { <option [value]="c.id">{{ c.name }}</option> }
+      </select>
+      <button (click)="addMenuItem()">Add</button>
+      <h3>Menu Items</h3>
+      @for (m of menuItems; track m.id) {
+        <div class="card">{{ m.name }} - Rs {{ m.price }} <button (click)="deleteItem(m.id)">Delete</button></div>
+      }
+    </div>
+  }
+</div>

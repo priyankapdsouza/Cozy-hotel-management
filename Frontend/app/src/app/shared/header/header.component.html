@@ -1,0 +1,21 @@
+<header class="header">
+  <a routerLink="/" class="logo">The Cozy Table</a>
+  <nav class="nav">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+    <a routerLink="/menu" routerLinkActive="active">Menu</a>
+    @if (auth.isLoggedIn()) {
+      <a routerLink="/reservations" routerLinkActive="active">Reservations</a>
+      <a routerLink="/cart" routerLinkActive="active">Cart ({{ cart.totalItems() }})</a>
+      <a routerLink="/my-orders" routerLinkActive="active">My Orders</a>
+      <a routerLink="/profile" routerLinkActive="active">Profile</a>
+      <a routerLink="/feedback" routerLinkActive="active">Feedback</a>
+      @if (auth.isAdmin()) {
+        <a routerLink="/admin" routerLinkActive="active">Admin</a>
+      }
+      <button class="btn-logout" (click)="auth.logout()">Logout</button>
+    } @else {
+      <a routerLink="/login" routerLinkActive="active">Login</a>
+      <a routerLink="/register" routerLinkActive="active">Register</a>
+    }
+  </nav>
+</header>

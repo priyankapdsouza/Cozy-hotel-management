@@ -1,0 +1,29 @@
+.menu-page { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+.filters { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+.filters select, .filters input { padding: 0.5rem; }
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+.menu-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.img-wrap { height: 180px; background: #eee; }
+.img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.placeholder { display: flex; align-items: center; justify-content: center; height: 100%; color: #999; }
+.menu-card h3 { padding: 1rem; margin: 0; }
+.desc { padding: 0 1rem; color: #666; font-size: 0.9rem; }
+.price { padding: 0.5rem 1rem; font-weight: 700; color: #8b4513; }
+.menu-card button {
+  margin: 1rem;
+  padding: 0.5rem 1rem;
+  background: #8b4513;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
